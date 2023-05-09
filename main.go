@@ -113,7 +113,7 @@ func recursivaFourier2(entrada ...complex128) []complex128 {
 		}
 
 		slicePar = recursivaFourier2(slicePar...)
-		sliceImpar = recursivaFourier2(sliceImpar2...)
+		sliceImpar = recursivaFourier2(sliceImpar...)
 
 		sliceSalida = slicePar
 
