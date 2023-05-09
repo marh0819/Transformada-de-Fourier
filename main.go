@@ -173,5 +173,5 @@ func main() {
 	//	}
 
 	// a = complex(3, imag(a))
-	fmt.Println(arreglo2, "Arreglo final este arreglo funcion acon el commit funciona? ")
+	fmt.Println(arreglo2, "Arreglo ")
 }
