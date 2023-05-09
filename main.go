@@ -173,5 +173,5 @@ func main() {
 	//	}
 
 	// a = complex(3, imag(a))
-	fmt.Println(arreglo2, "Arreglo final")
+	fmt.Println(arreglo2, "Arreglo final  ")
 }
