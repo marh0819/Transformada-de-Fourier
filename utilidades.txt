@@ -1,0 +1,130 @@
+	
+                                            //maneras diferentes de declarar un slice
+    //var entradaA = []int {}
+	//entradaA := make([]int , 0 )
+	//entradaA := []int{}                          
+                           
+
+                                            //declaracion de variable complejja a pie
+	//a:= complex(0 , 1)
+	//b:= complex(1 , 7)
+	//c:= complex(2 , 6)
+	//d:= complex(3 , 3)
+	//e:= complex(4 , 1)
+	//f:= complex(5 , 7)
+	//g:= complex(6 , 6)
+	//h:= complex(7 , 3)
+
+
+                                            //impresion de complejos y slice de complejos
+    //fmt.Println(a)                         //completo
+	///fmt.Println(imag(a))                   //parte imaginaria
+    //fmt.Println(real(a))                    //parte real
+	//fmt.Println(entradaA)                    //impreion de un slice
+    //entradaA = append(entradaA, i)           // asi agregamos un elemeto a un slice, agrandandolo
+
+	//for i:=0; i < len(arreglo); i++{
+	//		fmt.Println(imag(arreglo[i]))
+	//	}
+	// a = complex(3, imag(a))
+
+
+
+//una recursiva que divide slices al esilo fourier (enteros)   
+    func recursivaFourier(entrada ...int) []int {
+	if len(entrada) == 1 {
+		return entrada
+	} else {
+
+		slicePar := []int{}
+		sliceImpar := []int{}
+		sliceSalida := []int{}
+		for i := 0; i < len(entrada); i++ {
+			if i%2 == 0 {
+				slicePar = append(slicePar, entrada[i])
+
+			} else {
+				sliceImpar = append(sliceImpar, entrada[i])
+
+			}
+		}
+
+		slicePar = recursivaFourier(slicePar...)
+		sliceImpar = recursivaFourier(sliceImpar...)
+
+		sliceSalida = slicePar
+
+		for j := 0; j < len(sliceImpar); j++ {
+			sliceSalida = append(sliceSalida, sliceImpar[j])
+		}
+
+		return sliceSalida
+	}
+}
+
+
+//una funcion que valida a las potencia de 2(obsoleta)
+func comprobacion(lar int) bool {
+	x := false
+	switch lar {
+
+	case 1:
+		x = true
+		break
+	case 2:
+		x = true
+		break
+	case 4:
+		x = true
+		break
+	case 8:
+		x = true
+		break
+	case 16:
+		x = true
+		break
+	case 32:
+		x = true
+		break
+	case 64:
+		x = true
+		break
+	case 128:
+		x = true
+		break
+	case 256:
+		x = true
+		break
+	case 512:
+		x = true
+		break
+	default:
+		x = false
+		break
+	}
+
+	return x
+}
+
+//una funcion que crea un slice DE IUN TAMAÑO PREDEFINIDO y lo llena de numeros
+//slice = llenarSlice(8)
+func llenarSlice(largo int) []int {
+
+	entradaA := []int{}
+	for i := 0; i < largo; i++ {
+		entradaA = append(entradaA, i)                  //eta es la forma de ir agrandando un arreglo que no tiene nada
+	}
+	return entradaA
+
+}
+
+
+//una funcion que imprime un lice que se el envié
+// imprimeSlice(slice...)
+
+func imprimeSlice(entrada ...int) {
+	for i := 0; i < 0; i++ {
+		fmt.Print(entrada[i])
+	}
+
+}
