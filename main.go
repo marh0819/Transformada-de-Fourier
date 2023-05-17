@@ -5,47 +5,7 @@ import (
 	"math"
 )
 
-func comprobacion(lar int) bool {
-	x := false
-	switch lar {
-
-	case 1:
-		x = true
-		break
-	case 2:
-		x = true
-		break
-	case 4:
-		x = true
-		break
-	case 8:
-		x = true
-		break
-	case 16:
-		x = true
-		break
-	case 32:
-		x = true
-		break
-	case 64:
-		x = true
-		break
-	case 128:
-		x = true
-		break
-	case 256:
-		x = true
-		break
-	case 512:
-		x = true
-		break
-	default:
-		x = false
-		break
-	}
-
-	return x
-}
+const pi = 3.14159265358979323846264338327950288419716939937510582097494459
 
 func llenarSlice(largo int) []int {
 
@@ -130,78 +90,101 @@ func recursivaFourier2(entrada ...complex128) []complex128 {
 
 func transformadaFormula(arre ...complex128) []complex128 {
 	n := len(arre)
-	w := complex(0, 0)
-	z := complex(0, 0)
-	salidaA := make([]complex128, n)
+	if n > 1 {
 
-	for m := 0; m < len(arre)/2; m += 2 {
-		aux := m / n
-		w = complex(float64(math.Cos(2*math.Pi*float64(aux))), imag(w))
-		w = complex(real(w), float64(-1*math.Sin(2*math.Pi*float64(aux))))
-		z = complex(real(w)*real(arre[m+1])-imag(w)*imag(arre[m+1]), imag(z))
-		z = complex(real(z), real(w)*imag(arre[m+1])+imag(w)*real(arre[m+1]))
+		par := make([]complex128, n/2)
+		par = traerPar(arre...)
 
-		salidaA[m] = complex(real(arre[m])+real(z), imag(salidaA[m]))
-		salidaA[m] = complex(real(salidaA[m]), imag(arre[m])+imag(z))
+		impar := make([]complex128, n/2)
+		impar = traerImpar(arre...)
 
-		fmt.Println("", real(arre[m])-real(z))
-		salidaA[m+(n/2)] = complex(real(arre[m])-real(z), imag(salidaA[m+n/2]))
-		salidaA[m+(n/2)] = complex(real(salidaA[m+n/2]), imag(arre[m])-imag(z))
+		par = transformadaFormula(par...)
 
+		impar = transformadaFormula(impar...)
+
+		w := complex(0, 0)
+		z := complex(0, 0)
+
+		for m := 0; m < n/2; m++ {
+			aux := float64(m) / float64(n)
+			w = complex(float64(math.Cos(2*math.Pi*float64(aux))), imag(w))
+			w = complex(real(w), float64(-1*math.Sin(2*math.Pi*float64(aux))))
+			z = complex(real(w)*real(impar[m])-imag(w)*imag(impar[m]), real(w)*imag(impar[m])+imag(w)*real(impar[m]))
+			arre[m] = complex(real(par[m])+real(z), imag(arre[m]))
+			arre[m] = complex(real(arre[m]), imag(par[m])+imag(z))
+
+			arre[m+(n>>1)] = complex(real(par[m])-real(z), imag(arre[m+n/2]))
+			arre[m+(n>>1)] = complex(real(arre[m+n/2]), imag(par[m])-imag(z))
+
+		}
 	}
-	return salidaA
+
+	return arre
+}
+
+func traerPar(arre ...complex128) []complex128 {
+	n := len(arre) / 2
+	p := 0
+	pares := make([]complex128, n)
+
+	for i := 0; i < len(arre); i++ {
+		if i%2 == 0 {
+			pares[p] = arre[i]
+			p++
+		}
+	}
+
+	return pares
+}
+
+func traerImpar(arre ...complex128) []complex128 {
+	n := len(arre) / 2
+	p := 0
+	impares := make([]complex128, n)
+
+	for i := 0; i < len(arre); i++ {
+		if i%2 != 0 {
+			impares[p] = arre[i]
+			p++
+		}
+	}
+
+	return impares
+}
+
+func potenciaDeDos(n int) bool {
+	if n <= 0 {
+		return false
+	}
+
+	log2 := math.Log2(float64(n))
+	return math.Floor(log2) == log2
 }
 
 func main() {
-	//var entradaA = []int {}
-	//entradaA := make([]int , 0 )
 
-	//entradaA := []int{}                           // slice de entrada
-	///salidaA := []int{}                            // slice de salida
-	//ingreso := 7                                 //valor de ingreo (solo prueba)
+	a := 8
+	//var a int
+	//fmt.Print("Ingrese un número entero: ")
+	//fmt.Scan(&a)
+	if potenciaDeDos(a) {
+		fmt.Println("El número ingresado es una potencia de 2.")
+		arreglo := []complex128{}
+		arreglo2 := []complex128{}
+		arreglo3 := []complex128{}
 
-	//if comprobacion(ingreso){
-	//entradaA = llenarSlice(ingreso)               // lena el slice con el valor de ingreso
-	//imprimeSlice(entradaA...)                 // imprime los valores del slice
-	//	salidaA = recursivaFourier(entradaA...)   //llama a la recuriva de furier ordenadora
+		for k := 0; k < a; k++ {
+			aux := complex(float64(k), 0)
+			arreglo = append(arreglo, aux)
+		}
 
-	//	fmt.Println(entradaA)
-	//	fmt.Println(salidaA)
-	//}else {
+		arreglo2 = recursivaFourier2(arreglo...)
+		fmt.Println(arreglo2, "Arreglo ")
+		arreglo3 = transformadaFormula(arreglo...)
+		fmt.Println("\n\n\n", arreglo3)
 
-	//println("existe un error, este algoritmo solo puede ser ingresado con potencias de 2")
-	//}
-
-	//a:= complex(0 , 1)
-	//b:= complex(1 , 7)
-	//c:= complex(2 , 6)
-	//d:= complex(3 , 3)
-	//e:= complex(4 , 1)
-	////f:= complex(5 , 7)
-	//g:= complex(6 , 6)
-	//h:= complex(7 , 3)
-
-	a := 8 // aqui van los multiplos de llenado malparido miguel
-	arreglo := []complex128{}
-	arreglo2 := []complex128{}
-	arreglo3 := []complex128{}
-
-	for k := 0; k < a; k++ {
-		aux := complex(float64(k), 0)
-		arreglo = append(arreglo, aux)
+	} else {
+		fmt.Println("El número ingresado NO es una potencia de 2.")
 	}
 
-	arreglo2 = recursivaFourier2(arreglo...)
-	//fmt.Println(a)
-	///fmt.Println(imag(a))
-	//fmt.Println(arreglo)
-
-	//for i:=0; i < len(arreglo); i++{
-	//		fmt.Println(imag(arreglo[i]))
-	//	}
-
-	// a = complex(3, imag(a))
-	fmt.Println(arreglo2, "Arreglo ")
-	arreglo3 = transformadaFormula(arreglo2[0], arreglo2[1])
-	fmt.Println(arreglo3)
 }
