@@ -7,55 +7,7 @@ import (
 
 const pi = 3.14159265358979323846264338327950288419716939937510582097494459
 
-func llenarSlice(largo int) []int {
-
-	entradaA := []int{}
-	for i := 0; i < largo; i++ {
-		entradaA = append(entradaA, i)
-	}
-	return entradaA
-
-}
-
-func imprimeSlice(entrada ...int) {
-	for i := 0; i < 0; i++ {
-		fmt.Print(entrada[i])
-	}
-
-}
-
-func recursivaFourier(entrada ...int) []int {
-	if len(entrada) == 1 {
-		return entrada
-	} else {
-
-		slicePar := []int{}
-		sliceImpar := []int{}
-		sliceSalida := []int{}
-		for i := 0; i < len(entrada); i++ {
-			if i%2 == 0 {
-				slicePar = append(slicePar, entrada[i])
-
-			} else {
-				sliceImpar = append(sliceImpar, entrada[i])
-
-			}
-		}
-
-		slicePar = recursivaFourier(slicePar...)
-		sliceImpar = recursivaFourier(sliceImpar...)
-
-		sliceSalida = slicePar
-
-		for j := 0; j < len(sliceImpar); j++ {
-			sliceSalida = append(sliceSalida, sliceImpar[j])
-		}
-
-		return sliceSalida
-	}
-}
-
-func recursivaFourier2(entrada ...complex128) []complex128 {
+func ordenarFourier(entrada ...complex128) []complex128 {
 	if len(entrada) == 1 {
 		return entrada
 	} else {
@@ -75,8 +27,8 @@ func recursivaFourier2(entrada ...complex128) []complex128 {
 			}
 		}
 
-		slicePar = recursivaFourier2(slicePar...)
-		sliceImpar = recursivaFourier2(sliceImpar...)
+		slicePar = ordenarFourier(slicePar...)
+		sliceImpar = ordenarFourier(sliceImpar...)
 
 		sliceSalida = slicePar
 
@@ -88,15 +40,15 @@ func recursivaFourier2(entrada ...complex128) []complex128 {
 	}
 }
 
-func transformadaFormula(arre ...complex128) []complex128 {
-	n := len(arre)
+func transformadaFormula(fft ...complex128) []complex128 {
+	n := len(fft)
 	if n > 1 {
 
 		par := make([]complex128, n/2)
-		par = traerPar(arre...)
+		par = traerPar(fft...)
 
 		impar := make([]complex128, n/2)
-		impar = traerImpar(arre...)
+		impar = traerImpar(fft...)
 
 		par = transformadaFormula(par...)
 
@@ -107,19 +59,19 @@ func transformadaFormula(arre ...complex128) []complex128 {
 
 		for m := 0; m < n/2; m++ {
 			aux := float64(m) / float64(n)
-			w = complex(float64(math.Cos(2*math.Pi*float64(aux))), imag(w))
-			w = complex(real(w), float64(-1*math.Sin(2*math.Pi*float64(aux))))
+			w = complex(float64(math.Cos(2*pi*float64(aux))), imag(w))
+			w = complex(real(w), float64(-1*math.Sin(2*pi*float64(aux))))
 			z = complex(real(w)*real(impar[m])-imag(w)*imag(impar[m]), real(w)*imag(impar[m])+imag(w)*real(impar[m]))
-			arre[m] = complex(real(par[m])+real(z), imag(arre[m]))
-			arre[m] = complex(real(arre[m]), imag(par[m])+imag(z))
+			fft[m] = complex(real(par[m])+real(z), imag(fft[m]))
+			fft[m] = complex(real(fft[m]), imag(par[m])+imag(z))
 
-			arre[m+(n>>1)] = complex(real(par[m])-real(z), imag(arre[m+n/2]))
-			arre[m+(n>>1)] = complex(real(arre[m+n/2]), imag(par[m])-imag(z))
+			fft[m+(n>>1)] = complex(real(par[m])-real(z), imag(fft[m+n/2]))
+			fft[m+(n>>1)] = complex(real(fft[m+n/2]), imag(par[m])-imag(z))
 
 		}
 	}
 
-	return arre
+	return fft
 }
 
 func traerPar(arre ...complex128) []complex128 {
@@ -163,25 +115,25 @@ func potenciaDeDos(n int) bool {
 
 func main() {
 
-	a := 8
-	//var a int
+	cantidadDatos := 8
+	//var cantidadDatos int
 	//fmt.Print("Ingrese un número entero: ")
-	//fmt.Scan(&a)
-	if potenciaDeDos(a) {
+	//fmt.Scan(&cantidadDatos)
+	if potenciaDeDos(cantidadDatos) {
 		fmt.Println("El número ingresado es una potencia de 2.")
-		arreglo := []complex128{}
-		arreglo2 := []complex128{}
-		arreglo3 := []complex128{}
+		slice := []complex128{}
+		sliceOrdenado := []complex128{}
+		fft := []complex128{}
 
-		for k := 0; k < a; k++ {
+		for k := 0; k < cantidadDatos; k++ {
 			aux := complex(float64(k), 0)
-			arreglo = append(arreglo, aux)
+			slice = append(slice, aux)
 		}
 
-		arreglo2 = recursivaFourier2(arreglo...)
-		fmt.Println(arreglo2, "Arreglo ")
-		arreglo3 = transformadaFormula(arreglo...)
-		fmt.Println("\n\n\n", arreglo3)
+		sliceOrdenado = ordenarFourier(slice...)
+		fmt.Println(sliceOrdenado, " slice ordenado")
+		fft = transformadaFormula(slice...)
+		fmt.Println("\n\n\n", fft)
 
 	} else {
 		fmt.Println("El número ingresado NO es una potencia de 2.")
