@@ -1,14 +1,14 @@
 package main
 
-func elevar(valor float64, hasta int) float64 {
+func elevar(base float64, exponente int) float64 {
 
-	if hasta > 0 {
-		valorini := valor
+	if exponente > 0 {
+		valorini := base
 
-		for i := 1; i < hasta; i++ {
-			valor = valor * valorini
+		for i := 1; i < exponente; i++ {
+			base = base * valorini
 		}
-		return valor
+		return base
 
 	} else {
 		return 1
@@ -35,7 +35,7 @@ func seno(x float64) float64 {
 
 	var seno float64 = 0
 
-	for n := 0; n < 33; n++ {
+	for n := 0; n < 10; n++ {
 		seno += elevar(-1, n) * (elevar(x, (2*n+1)) / float64(factorial(2*n+1)))
 	}
 
@@ -46,9 +46,19 @@ func coseno(x float64) float64 {
 
 	var coseno float64 = 0
 
-	for n := 0; n < 20; n++ {
+	for n := 0; n < 10; n++ {
 		coseno += elevar(-1, n) * (elevar(x, (2*n)) / float64(factorial(2*n)))
 	}
 
 	return coseno
+}
+
+func arctan(x float64) float64 {
+	var arctan float64 = 0
+
+	for n := 0; n < 15; n++ {
+		arctan += elevar(-1, n) * (elevar(x, (2*n+1)) / float64(2*n+1))
+	}
+
+	return arctan
 }

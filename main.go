@@ -59,8 +59,8 @@ func transformadaFormula(fft ...complex128) []complex128 {
 
 		for m := 0; m < n/2; m++ {
 			aux := float64(m) / float64(n)
-			w = complex(float64(math.Cos(2*pi*float64(aux))), imag(w))
-			w = complex(real(w), float64(-1*math.Sin(2*pi*float64(aux))))
+			w = complex(float64(coseno(2*pi*float64(aux))), imag(w))
+			w = complex(real(w), float64(-1*seno(2*pi*float64(aux))))
 			z = complex(real(w)*real(impar[m])-imag(w)*imag(impar[m]), real(w)*imag(impar[m])+imag(w)*real(impar[m]))
 			fft[m] = complex(real(par[m])+real(z), imag(fft[m]))
 			fft[m] = complex(real(fft[m]), imag(par[m])+imag(z))
@@ -115,10 +115,11 @@ func potenciaDeDos(n int) bool {
 
 func main() {
 
-	cantidadDatos := 8
 	//var cantidadDatos int
 	//fmt.Print("Ingrese un número entero: ")
 	//fmt.Scan(&cantidadDatos)
+	cantidadDatos := 8
+
 	if potenciaDeDos(cantidadDatos) {
 		fmt.Println("El número ingresado es una potencia de 2.")
 		slice := []complex128{}
@@ -133,10 +134,13 @@ func main() {
 		sliceOrdenado = ordenarFourier(slice...)
 		fmt.Println(sliceOrdenado, " slice ordenado")
 		fft = transformadaFormula(slice...)
-		fmt.Println("\n\n\n", fft)
+		fmt.Println("\n\n\nDespues de aplicar la fft:\n", fft, "\n\n")
+
+		JSON(fft...)
 
 	} else {
 		fmt.Println("El número ingresado NO es una potencia de 2.")
+
 	}
 
 }
