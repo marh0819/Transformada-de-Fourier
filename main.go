@@ -1,8 +1,13 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"math"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 const pi = 3.14159265358979323846264338327950288419716939937510582097494459
@@ -113,6 +118,31 @@ func potenciaDeDos(n int) bool {
 	return math.Floor(log2) == log2
 }
 
+func serv() {
+
+	ctx := context.Background()
+
+	serverDoneChan := make(chan os.Signal, 1)
+
+	signal.Notify(serverDoneChan, os.Interrupt, syscall.SIGTERM)
+
+	srv := New(":8080")
+
+	go func() {
+		err := srv.ListenAndServe()
+		if err != nil {
+			panic(err)
+		}
+	}()
+
+	log.Println("server started")
+
+	<-serverDoneChan
+
+	srv.Shutdown(ctx)
+	log.Println("server stoped")
+}
+
 func main() {
 
 	//var cantidadDatos int
@@ -137,6 +167,7 @@ func main() {
 		fmt.Println("\n\n\nDespues de aplicar la fft:\n", fft, "\n\n")
 
 		JSON(fft...)
+		serv()
 
 	} else {
 		fmt.Println("El número ingresado NO es una potencia de 2.")
