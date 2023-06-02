@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"math"
 	"os"
@@ -144,11 +143,11 @@ func serv() {
 }
 
 func main() {
-
+	serv()
 	//var cantidadDatos int
 	//fmt.Print("Ingrese un número entero: ")
 	//fmt.Scan(&cantidadDatos)
-	cantidadDatos := 8
+	/*cantidadDatos := 8
 
 	if potenciaDeDos(cantidadDatos) {
 		fmt.Println("El número ingresado es una potencia de 2.")
@@ -167,11 +166,13 @@ func main() {
 		fmt.Println("\n\n\nDespues de aplicar la fft:\n", fft, "\n\n")
 
 		JSON(fft...)
-		serv()
+		//serv()
+
+
 
 	} else {
 		fmt.Println("El número ingresado NO es una potencia de 2.")
 
-	}
+	}*/
 
 }

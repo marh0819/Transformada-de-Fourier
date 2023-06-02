@@ -1,0 +1,18 @@
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+Estos son codigos para poder iniciar el servidor en powershell
+
+Invoke-WebRequest -Uri "http://127.0.0.1:8080/transformada" -Method GET -UseBasicParsing
+
+Invoke-WebRequest -Uri "http://127.0.0.1:8080" -Method POST -UseBasicParsing (El apartado de -UseBasicParsing se utiliza para poder ejecutar el servidor en un navegador ajeno al Explorer)
+
+En caso de que se quiera agregar algo mediante el powershell se debe usar la siguiente sintaxis
+
+$Body = '{"Name":"Colombia","Language":"español"}'(Aqui debes dar shift+Enter, para poder ingresar los datos que deseas con el metodo POST)
+>> Invoke-WebRequest -Uri "http://127.0.0.1:8080/transformada" -Method POST -Body $Body -UseBasicParsing
+
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+-Trucos
+
+Ctrl+C Para detener el powershell
+
+°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
