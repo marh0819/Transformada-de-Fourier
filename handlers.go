@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -49,7 +48,7 @@ func getCountries(w http.ResponseWriter, r *http.Request) {
 
 		data := JSON(fft...)
 
-		json.NewEncoder(w).Encode(data)
+		//json.NewEncoder(w).Encode(data)
 		fmt.Fprintf(w, "%v", data)
 
 	} else {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"math"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -117,6 +118,65 @@ func potenciaDeDos(n int) bool {
 	return math.Floor(log2) == log2
 }
 
+func enableCors(handler http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Permitir el acceso desde cualquier origen
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+
+		// Permitir los métodos GET, POST, PUT, DELETE
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+
+		// Permitir los encabezados Content-Type y Authorization
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		// Si es una solicitud OPTIONS, simplemente responder con OK
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Continuar con el siguiente manejador
+		handler.ServeHTTP(w, r)
+	})
+}
+
+func serv() {
+	ctx := context.Background()
+
+	serverDoneChan := make(chan os.Signal, 1)
+	signal.Notify(serverDoneChan, os.Interrupt, syscall.SIGTERM)
+
+	// Crear el enrutador
+	router := http.NewServeMux()
+
+	// Agregar tus manejadores de rutas aquí
+	router.HandleFunc("/transformada", getCountries)
+
+	// Crear el servidor sin el middleware de CORS
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: enableCors(router),
+	}
+
+	go func() {
+		err := srv.ListenAndServe()
+		if err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Error en el servidor: %v", err)
+		}
+	}()
+
+	log.Println("Servidor iniciado")
+
+	<-serverDoneChan
+
+	err := srv.Shutdown(ctx)
+	if err != nil {
+		log.Fatalf("Error al detener el servidor: %v", err)
+	}
+	log.Println("Servidor detenido")
+}
+
+/*
 func serv() {
 
 	ctx := context.Background()
@@ -140,7 +200,7 @@ func serv() {
 
 	srv.Shutdown(ctx)
 	log.Println("server stoped")
-}
+}*/
 
 func main() {
 	serv()

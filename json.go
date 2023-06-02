@@ -10,6 +10,7 @@ type MagYFase struct {
 	Fase float64 `json:"fase"`
 }
 
+/*
 // Creamos Json para la magnitud y la fase.
 func JSON(fft ...complex128) []byte {
 
@@ -37,9 +38,9 @@ func JSON(fft ...complex128) []byte {
 	fmt.Println("Json: ", string(jsonData))
 	return jsonData
 
-}
+}*/
 
-/*Para poder revisar que los valores que queremos si son los correctos en el resultado del json debemos usar esta funcion
+// Para poder revisar que los valores que queremos si son los correctos en el resultado del json debemos usar esta funcion
 func JSON(fft ...complex128) string {
 
 	magnitudes := magnitud(fft...)
@@ -65,4 +66,4 @@ func JSON(fft ...complex128) string {
 	fmt.Println("Json: ", string(jsonData))
 	return string(jsonData)
 
-}*/
+}
