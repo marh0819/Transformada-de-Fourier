@@ -1,4 +1,4 @@
-module github.com/LeyerOrdonez/goPruebas
+module Transformada-de-Fourier
 
 go 1.20
 
