@@ -46,15 +46,9 @@ fetch('http://localhost:8080/transformada')
             data: mag, // Magnitud como eje Y
             backgroundColor: 'rgba(41,10,131,0.5)',
             borderColor: 'rgba(41,10,131,0.5)',
-            borderWidth: 4
-          }/*,
-          {
-            label: 'fases',
-            data: fase, // Magnitud como eje Y
-            backgroundColor: 'rgba(0, 123, 255, 0.5)',
-            borderColor: 'rgba(0, 123, 255, 1)',
-            borderWidth: 1
-          }*/]
+            borderWidth: 2,
+            tension: 0.2
+          }]
         },
         options: {
           responsive: true,
